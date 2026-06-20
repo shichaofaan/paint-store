@@ -1486,3 +1486,432 @@ body {
   opacity: 0.8;
   font-weight: 300;
 }
+
+/* ============================================
+   沉浸式首页 - 新增样式
+   ============================================ */
+
+/* ===== 1. 沉浸式 Hero ===== */
+.immersive-hero {
+  position: relative;
+  height: 100vh;
+  min-height: 700px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hero-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg,
+    rgba(250, 250, 248, 0) 0%,
+    rgba(250, 250, 248, 0.3) 50%,
+    rgba(250, 250, 248, 0.9) 100%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-center {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.hero-label {
+  display: block;
+  font-size: 0.6875rem;
+  letter-spacing: 0.4em;
+  color: var(--color-text-secondary);
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 200;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
+}
+
+.hero-title-line {
+  display: block;
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.hero-title-line:nth-child(1) {
+  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+}
+
+.hero-title-line:nth-child(2) {
+  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.1s forwards;
+}
+
+.hero-subtitle {
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: var(--color-text-secondary);
+  font-weight: 300;
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.4s forwards;
+}
+
+.hero-cta {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.7s forwards;
+}
+
+@keyframes heroFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 滚动提示 */
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  opacity: 0;
+  animation: heroFadeUp 1s ease 2.5s forwards;
+}
+
+.hero-scroll-hint span {
+  font-size: 0.625rem;
+  letter-spacing: 0.2em;
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--color-text-tertiary), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ===== 2. 实景画廊 ===== */
+.gallery-section {
+  padding: 6rem 0;
+  overflow: hidden;
+}
+
+.gallery-track {
+  display: flex;
+  gap: 1.5rem;
+  animation: galleryScroll 30s linear infinite;
+  width: max-content;
+}
+
+.gallery-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes galleryScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.gallery-item {
+  flex: 0 0 350px;
+  height: 450px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-item:hover {
+  transform: perspective(800px) rotateY(-3deg) scale(1.02);
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-item:hover .gallery-image {
+  transform: scale(1.05);
+}
+
+.gallery-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+  color: white;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
+}
+
+.gallery-overlay h3 {
+  font-size: 1.25rem;
+  font-weight: 300;
+  font-family: var(--font-heading);
+  letter-spacing: 0.02em;
+}
+
+/* ===== 3. 色卡交互区 ===== */
+.color-interactive-section {
+  padding: 8rem 2rem;
+  background: var(--color-bg);
+}
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+}
+
+.color-cell {
+  aspect-ratio: 1;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 4px;
+}
+
+.color-cell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: url(#paint-texture);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.color-cell:hover::before {
+  opacity: 1;
+}
+
+.color-cell:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow:
+    0 8px 25px rgba(0,0,0,0.1),
+    0 0 40px var(--cell-color);
+}
+
+.color-cell-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
+  color: white;
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.color-cell:hover .color-cell-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.color-cell.active {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+.color-hint {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.05em;
+}
+
+/* 强调色元素（响应色卡选择） */
+.accent-element {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.accent-active .accent-element {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* ===== 4. 视差区域 ===== */
+.parallax-section {
+  position: relative;
+  overflow: hidden;
+}
+
+.parallax-decor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.decor-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  opacity: 0.3;
+  will-change: transform;
+}
+
+.decor-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-border), transparent);
+  opacity: 0.3;
+  will-change: transform;
+}
+
+/* ===== 5. 流动 Footer ===== */
+.footer {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-flow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  display: flex;
+  overflow: hidden;
+}
+
+.flow-bar {
+  flex: 1;
+  height: 100%;
+  background: var(--flow-color);
+  opacity: 0.6;
+  animation: flowMove 4s ease-in-out infinite;
+  animation-delay: var(--flow-delay);
+}
+
+@keyframes flowMove {
+  0%, 100% { transform: scaleX(0.3); opacity: 0.3; }
+  50% { transform: scaleX(1); opacity: 0.8; }
+}
+
+/* ===== 6. CTA 区域 ===== */
+.cta-section {
+  background: var(--color-text);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 30% 50%, rgba(196, 149, 106, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 70% 50%, rgba(184, 196, 212, 0.1) 0%, transparent 50%);
+  animation: ctaGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes ctaGlow {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(5%, -5%); }
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: clamp(2rem, 10vw, 3.5rem);
+  }
+
+  .gallery-item {
+    flex: 0 0 280px;
+    height: 360px;
+  }
+
+  .color-grid {
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  }
+
+  .gallery-track {
+    animation-duration: 20s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title-line,
+  .hero-label,
+  .hero-subtitle,
+  .hero-cta {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .gallery-track {
+    animation: none;
+  }
+
+  .flow-bar {
+    animation: none;
+  }
+}

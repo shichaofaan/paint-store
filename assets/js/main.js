@@ -234,6 +234,125 @@ const UI = {
   }
 };
 
+// ===== Canvas 流体背景 =====
+const HeroCanvas = {
+  canvas: null,
+  ctx: null,
+  blobs: [],
+  animationId: null,
+
+  init() {
+    this.canvas = document.getElementById('hero-canvas');
+    if (!this.canvas) return;
+
+    this.ctx = this.canvas.getContext('2d');
+    this.resize();
+
+    // 创建色块
+    this.blobs = [
+      { x: 0.3, y: 0.4, r: 200, color: 'rgba(232, 213, 196, 0.15)', vx: 0.0003, vy: 0.0002 },
+      { x: 0.7, y: 0.6, r: 180, color: 'rgba(184, 196, 212, 0.12)', vx: -0.0002, vy: 0.0003 },
+      { x: 0.5, y: 0.3, r: 150, color: 'rgba(196, 212, 192, 0.1)', vx: 0.0002, vy: -0.0002 },
+      { x: 0.2, y: 0.7, r: 160, color: 'rgba(212, 192, 196, 0.1)', vx: 0.0001, vy: 0.0001 },
+      { x: 0.8, y: 0.3, r: 140, color: 'rgba(245, 230, 200, 0.12)', vx: -0.0003, vy: 0.0002 },
+    ];
+
+    window.addEventListener('resize', () => this.resize());
+    this.animate();
+  },
+
+  resize() {
+    const dpr = Math.min(window.devicePixelRatio, 2);
+    this.canvas.width = window.innerWidth * dpr;
+    this.canvas.height = window.innerHeight * dpr;
+    this.canvas.style.width = window.innerWidth + 'px';
+    this.canvas.style.height = window.innerHeight + 'px';
+    this.ctx.scale(dpr, dpr);
+  },
+
+  animate() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    this.ctx.clearRect(0, 0, w, h);
+
+    this.blobs.forEach(blob => {
+      // 移动
+      blob.x += blob.vx;
+      blob.y += blob.vy;
+
+      // 边界反弹
+      if (blob.x < -0.1 || blob.x > 1.1) blob.vx *= -1;
+      if (blob.y < -0.1 || blob.y > 1.1) blob.vy *= -1;
+
+      // 绘制渐变色块
+      const cx = blob.x * w;
+      const cy = blob.y * h;
+      const gradient = this.ctx.createRadialGradient(cx, cy, 0, cx, cy, blob.r);
+      gradient.addColorStop(0, blob.color);
+      gradient.addColorStop(1, 'transparent');
+
+      this.ctx.beginPath();
+      this.ctx.arc(cx, cy, blob.r, 0, Math.PI * 2);
+      this.ctx.fillStyle = gradient;
+      this.ctx.fill();
+    });
+
+    this.animationId = requestAnimationFrame(() => this.animate());
+  },
+
+  destroy() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+  }
+};
+
+// ===== 视差效果 =====
+const Parallax = {
+  init() {
+    const decor = document.querySelector('.parallax-decor');
+    if (!decor) return;
+
+    // 使用 IntersectionObserver 检测是否在视口内
+    let isInView = false;
+    const observer = new IntersectionObserver((entries) => {
+      isInView = entries[0].isIntersecting;
+    }, { threshold: 0 });
+    observer.observe(decor.parentElement);
+
+    // 滚动视差
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!isInView || ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        const section = decor.parentElement;
+        const rect = section.getBoundingClientRect();
+        const offset = rect.top / window.innerHeight;
+
+        // 装饰元素以不同速度移动
+        const circles = decor.querySelectorAll('.decor-circle');
+        const lines = decor.querySelectorAll('.decor-line');
+
+        circles.forEach((circle, i) => {
+          const speed = 0.3 + i * 0.1;
+          circle.style.transform = `translateY(${offset * speed * 100}px)`;
+        });
+
+        lines.forEach((line, i) => {
+          const speed = 0.2 + i * 0.05;
+          line.style.transform = `translateY(${offset * speed * 80}px)`;
+        });
+
+        ticking = false;
+      });
+    });
+  }
+};
+
 // Page Initializers
 const Pages = {
   // Home page
@@ -266,9 +385,9 @@ const Pages = {
         .join('');
     }
 
-    // Render color palette
-    const colorPaletteGrid = document.getElementById('color-palette-grid');
-    if (colorPaletteGrid) {
+    // Render color palette (新交互式色卡)
+    const colorGrid = document.getElementById('color-grid');
+    if (colorGrid) {
       const colors = [
         { name: '暖沙白', code: '#E8D5C4', color: '#E8D5C4' },
         { name: '雾霾蓝', code: '#B8C4D4', color: '#B8C4D4' },
@@ -277,21 +396,49 @@ const Pages = {
         { name: '燕麦奶', code: '#F0E8D8', color: '#F0E8D8' },
         { name: '深岩灰', code: '#8C8C8C', color: '#8C8C8C' },
         { name: '奶油黄', code: '#F5E6C8', color: '#F5E6C8' },
-        { name: '薄荷绿', code: '#C8E0D4', color: '#C8E0D4' }
+        { name: '薄荷绿', code: '#C8E0D4', color: '#C8E0D4' },
+        { name: '复古红', code: '#C4686A', color: '#C4686A' },
+        { name: '深海蓝', code: '#6A8C9E', color: '#6A8C9E' },
+        { name: '橄榄绿', code: '#8C9E6A', color: '#8C9E6A' },
+        { name: '大地棕', code: '#9E7C6A', color: '#9E7C6A' },
       ];
 
-      colorPaletteGrid.innerHTML = colors.map((c, index) => `
-        <div class="color-swatch animate-on-scroll"
-             style="--swatch-color: ${c.color}; background: ${c.color};"
-             data-delay="${index * 50}"
-             onclick="Pages.showImmersiveColor('${c.name}', '${c.color}', '${c.code}')">
-          <span class="color-name">${c.name}</span>
-          <span class="color-code">${c.code}</span>
+      colorGrid.innerHTML = colors.map((c, index) => `
+        <div class="color-cell animate-on-scroll"
+             style="background:${c.color};--cell-color:${c.color};"
+             data-color="${c.color}"
+             data-delay="${index * 30}">
+          <div class="color-cell-label">${c.name}</div>
         </div>
       `).join('');
+
+      // 色卡点击事件 - 联动页面装饰元素
+      colorGrid.addEventListener('click', (e) => {
+        const cell = e.target.closest('.color-cell');
+        if (!cell) return;
+
+        // 切换激活状态
+        document.querySelectorAll('.color-cell').forEach(c => c.classList.remove('active'));
+        cell.classList.add('active');
+
+        const color = cell.dataset.color;
+        document.documentElement.style.setProperty('--accent-color', color);
+        document.body.classList.add('accent-active');
+
+        // 更新强调色元素
+        document.querySelectorAll('.accent-element').forEach(el => {
+          el.style.color = color;
+          el.style.borderColor = color;
+        });
+      });
     }
 
-    UI.initHeroSlider();
+    // 初始化 Canvas 流体背景
+    HeroCanvas.init();
+
+    // 初始化视差效果
+    Parallax.init();
+
     ScrollAnimator.init();
   },
 
