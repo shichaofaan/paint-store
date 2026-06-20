@@ -1,0 +1,7 @@
+name = "paint-store-analytics"
+main = "worker.js"
+compatibility_date = "2026-06-20"
+
+[[kv_namespaces]]
+binding = "ANALYTICS_KV"
+id = "2bf9e5f0007b4a6588989c3cadb041bd"
