@@ -63,21 +63,19 @@ const Analytics = {
         sessionId: this.getSessionId(),
       };
 
-      // 使用 sendBeacon（不阻塞页面，页面关闭也能发送）
-      if (navigator.sendBeacon) {
-        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-        navigator.sendBeacon(this.ENDPOINT, blob);
-      } else {
-        // 降级使用 fetch
-        fetch(this.ENDPOINT, {
-          method: 'POST',
-          body: JSON.stringify(data),
-          headers: { 'Content-Type': 'application/json' },
-          keepalive: true,
-        });
-      }
+      // 使用 fetch 发送
+      const response = await fetch(this.ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        mode: 'cors',
+      });
 
-      console.log('[Analytics] 记录访问:', data.page);
+      if (response.ok) {
+        console.log('[Analytics] 记录成功:', data.page);
+      } else {
+        console.error('[Analytics] 请求失败:', response.status);
+      }
     } catch (error) {
       console.error('[Analytics] 错误:', error);
     }
