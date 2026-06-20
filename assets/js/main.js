@@ -135,7 +135,7 @@ const UI = {
       <div class="product-card animate-on-scroll" onclick="window.location.href='product-detail.html?id=${product.id}'">
         <div class="product-card-image" style="background: ${placeholderColor}">
           ${product.images[0] ?
-            `<img src="assets/images/${product.images[0]}" alt="${product.name}" loading="lazy">` :
+            `<img src="assets/images/${product.images[0]}" alt="${product.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.querySelector('.img-placeholder').style.display='flex'"><div class="img-placeholder" style="display:none;height:100%;align-items:center;justify-content:center;font-size:3rem;position:absolute;inset:0;">🎨</div>` :
             `<div style="height:100%;display:flex;align-items:center;justify-content:center;font-size:3rem;">🎨</div>`
           }
           ${product.featured ? '<span class="product-card-badge">精选</span>' : ''}
@@ -576,14 +576,14 @@ const Pages = {
         <div class="product-gallery animate-on-scroll">
           <div class="gallery-main" id="gallery-main">
             ${product.images[0] ?
-              `<img src="assets/images/${product.images[0]}" alt="${product.name}">` :
+              `<img src="assets/images/${product.images[0]}" alt="${product.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div style="display:none;height:100%;align-items:center;justify-content:center;font-size:5rem;background:${UI.getCategoryColor(product.category)};position:absolute;inset:0;">🎨</div>` :
               `<div style="height:100%;display:flex;align-items:center;justify-content:center;font-size:5rem;background:${UI.getCategoryColor(product.category)}">🎨</div>`
             }
           </div>
           <div class="gallery-thumbs">
             ${product.images.map((img, i) => `
               <div class="gallery-thumb ${i === 0 ? 'active' : ''}" data-index="${i}">
-                <img src="assets/images/${img}" alt="${product.name}">
+                <img src="assets/images/${img}" alt="${product.name}" onerror="this.parentElement.style.display='none'">
               </div>
             `).join('')}
             ${product.video ? `
@@ -638,7 +638,7 @@ const Pages = {
           `;
         } else {
           const imgIndex = parseInt(thumb.dataset.index);
-          mainGallery.innerHTML = `<img src="assets/images/${product.images[imgIndex]}" alt="${product.name}">`;
+          mainGallery.innerHTML = `<img src="assets/images/${product.images[imgIndex]}" alt="${product.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div style="display:none;height:100%;align-items:center;justify-content:center;font-size:5rem;background:${UI.getCategoryColor(product.category)};position:absolute;inset:0;">🎨</div>`;
         }
       });
     }

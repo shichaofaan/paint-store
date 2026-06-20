@@ -661,6 +661,7 @@ body {
   overflow: hidden;
   background: var(--color-bg-warm);
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .gallery-main img,
