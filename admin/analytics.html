@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="访问统计 - 油漆店管理后台">
+  <title>访问统计 - 管理后台</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <style>
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-card-value {
+      font-size: 2rem;
+      font-weight: 300;
+      font-family: var(--font-mono);
+      color: var(--color-text);
+    }
+    .stat-card-label {
+      font-size: 0.75rem;
+      color: var(--color-text-secondary);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+    .chart-bar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .chart-bar-label {
+      width: 120px;
+      font-size: 0.8125rem;
+      color: var(--color-text-secondary);
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .chart-bar-track {
+      flex: 1;
+      height: 24px;
+      background: var(--color-bg-warm);
+      position: relative;
+      overflow: hidden;
+    }
+    .chart-bar-fill {
+      height: 100%;
+      background: var(--color-text);
+      transition: width 0.6s var(--ease-out);
+    }
+    .chart-bar-value {
+      width: 60px;
+      font-size: 0.8125rem;
+      font-family: var(--font-mono);
+      color: var(--color-text);
+      flex-shrink: 0;
+    }
+    .visit-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .visit-table th,
+    .visit-table td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 0.8125rem;
+    }
+    .visit-table th {
+      font-weight: 400;
+      color: var(--color-text-secondary);
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .device-tag {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      background: var(--color-bg-warm);
+      font-size: 0.6875rem;
+      color: var(--color-text-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <h2>油漆店管理</h2>
+      <ul class="admin-nav">
+        <li><a href="index.html">📦 商品管理</a></li>
+        <li><a href="analytics.html" class="active">📊 访问统计</a></li>
+        <li><a href="../" target="_blank">🌐 查看网站</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <div class="admin-header">
+        <h1>访问统计</h1>
+        <button onclick="loadStats()" class="btn btn-secondary" style="font-size:0.8125rem;">刷新数据</button>
+      </div>
+
+      <!-- 概览卡片 -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;">
+        <div class="stat-card">
+          <div class="stat-card-value" id="stat-total">-</div>
+          <div class="stat-card-label">总访问量</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-value" id="stat-today">-</div>
+          <div class="stat-card-label">今日访问</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-value" id="stat-week">-</div>
+          <div class="stat-card-label">本周访问</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-value" id="stat-unique">-</div>
+          <div class="stat-card-label">独立访客</div>
+        </div>
+      </div>
+
+      <!-- 图表区域 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;">
+        <!-- 页面访问 -->
+        <div class="stat-card">
+          <h3 style="font-size:0.875rem;font-weight:400;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.02em;">页面访问</h3>
+          <div id="chart-pages"></div>
+        </div>
+
+        <!-- 设备分布 -->
+        <div class="stat-card">
+          <h3 style="font-size:0.875rem;font-weight:400;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.02em;">设备分布</h3>
+          <div id="chart-devices"></div>
+        </div>
+
+        <!-- 浏览器分布 -->
+        <div class="stat-card">
+          <h3 style="font-size:0.875rem;font-weight:400;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.02em;">浏览器分布</h3>
+          <div id="chart-browsers"></div>
+        </div>
+
+        <!-- 来源分布 -->
+        <div class="stat-card">
+          <h3 style="font-size:0.875rem;font-weight:400;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.02em;">访问来源</h3>
+          <div id="chart-referrers"></div>
+        </div>
+      </div>
+
+      <!-- 最近访问 -->
+      <div class="stat-card">
+        <h3 style="font-size:0.875rem;font-weight:400;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.02em;">最近访问</h3>
+        <table class="visit-table">
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>页面</th>
+              <th>IP</th>
+              <th>设备</th>
+              <th>浏览器</th>
+              <th>来源</th>
+            </tr>
+          </thead>
+          <tbody id="visit-list">
+            <tr>
+              <td colspan="6" style="text-align:center;color:var(--color-text-tertiary);padding:2rem;">加载中...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ⚠️ 部署 Worker 后替换为你的地址
+    const API_BASE = 'https://paint-store-analytics.shichaofaan.workers.dev';
+
+    // 格式化时间
+    function formatTime(timestamp) {
+      const date = new Date(timestamp);
+      const now = new Date();
+      const diff = now - date;
+
+      if (diff < 60000) return '刚刚';
+      if (diff < 3600000) return Math.floor(diff / 60000) + ' 分钟前';
+      if (diff < 86400000) return Math.floor(diff / 3600000) + ' 小时前';
+
+      return date.toLocaleDateString('zh-CN', {
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    // 渲染柱状图
+    function renderBarChart(containerId, data) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      const entries = Object.entries(data).sort((a, b) => b[1] - a[1]);
+      const max = entries.length > 0 ? entries[0][1] : 1;
+
+      container.innerHTML = entries.slice(0, 8).map(([key, value]) => {
+        const percent = (value / max) * 100;
+        const label = key === '/' ? '首页' : key.replace('/', '').replace('.html', '') || key;
+        return `
+          <div class="chart-bar">
+            <div class="chart-bar-label">${label}</div>
+            <div class="chart-bar-track">
+              <div class="chart-bar-fill" style="width:${percent}%"></div>
+            </div>
+            <div class="chart-bar-value">${value}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // 加载数据
+    async function loadStats() {
+      try {
+        // 获取概览
+        const overviewRes = await fetch(`${API_BASE}/overview`);
+        const overview = await overviewRes.json();
+
+        // 更新统计卡片
+        document.getElementById('stat-total').textContent = overview.total;
+        document.getElementById('stat-today').textContent = overview.today;
+        document.getElementById('stat-week').textContent = overview.thisWeek;
+        document.getElementById('stat-unique').textContent = overview.uniqueVisitors;
+
+        // 渲染图表
+        renderBarChart('chart-pages', overview.pages);
+        renderBarChart('chart-devices', overview.devices);
+        renderBarChart('chart-browsers', overview.browsers);
+        renderBarChart('chart-referrers', overview.referrers);
+
+        // 获取最近访问
+        const statsRes = await fetch(`${API_BASE}/stats?limit=50`);
+        const visits = await statsRes.json();
+
+        // 渲染访问列表
+        const tbody = document.getElementById('visit-list');
+        tbody.innerHTML = visits.map(visit => `
+          <tr>
+            <td style="font-family:var(--font-mono);font-size:0.75rem;">${formatTime(visit.timestamp)}</td>
+            <td>${visit.page}</td>
+            <td style="font-family:var(--font-mono);font-size:0.75rem;">${visit.ip}</td>
+            <td><span class="device-tag">${visit.device}</span></td>
+            <td>${visit.browser}</td>
+            <td style="font-size:0.75rem;color:var(--color-text-secondary);">${visit.referrer === 'direct' ? '直接访问' : visit.referrer}</td>
+          </tr>
+        `).join('');
+
+      } catch (error) {
+        console.error('加载统计数据失败:', error);
+      }
+    }
+
+    // 页面加载时获取数据
+    document.addEventListener('DOMContentLoaded', () => {
+      loadStats();
+    });
+  </script>
+</body>
+</html>
