@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="专业油漆销售 - 高品质内外墙漆、木器漆、防水涂料，为您的家居提供专业涂装解决方案">
+  <title>油漆店 - 专业涂装解决方案</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span>油漆店</span>
+      </a>
+      <button class="menu-toggle" aria-label="菜单">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">首页</a></li>
+        <li><a href="products.html">商品展示</a></li>
+        <li><a href="about.html">关于我们</a></li>
+        <li><a href="contact.html">联系方式</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-slider">
+      <div class="hero-slide active">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg, #e8d5c4 0%, #c4b8a8 100%);"></div>
+        <div class="hero-overlay">
+          <div class="hero-content">
+            <span style="font-size:0.75rem;letter-spacing:0.3em;opacity:0.8;display:block;margin-bottom:1rem;">PROFESSIONAL PAINTING</span>
+            <h1>为您的空间<br>赋予色彩</h1>
+            <p>专业涂料 · 品质之选</p>
+            <a href="products.html" class="btn btn-primary btn-large">浏览商品</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg, #b8c4d4 0%, #8c9cb0 100%);"></div>
+        <div class="hero-overlay">
+          <div class="hero-content">
+            <span style="font-size:0.75rem;letter-spacing:0.3em;opacity:0.8;display:block;margin-bottom:1rem;">ECO-FRIENDLY</span>
+            <h1>环保健康<br>安心居住</h1>
+            <p>零VOC净味配方，打造健康家居环境</p>
+            <a href="products.html?category=interior" class="btn btn-primary btn-large">查看内墙漆</a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-slide">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg, #c4d4c0 0%, #a8b8a0 100%);"></div>
+        <div class="hero-overlay">
+          <div class="hero-content">
+            <span style="font-size:0.75rem;letter-spacing:0.3em;opacity:0.8;display:block;margin-bottom:1rem;">WEATHER RESISTANT</span>
+            <h1>耐候持久<br>品质保障</h1>
+            <p>专业外墙涂料，持久保持建筑美观</p>
+            <a href="products.html?category=exterior" class="btn btn-primary btn-large">查看外墙漆</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-dots">
+      <div class="hero-dot active" data-index="0"></div>
+      <div class="hero-dot" data-index="1"></div>
+      <div class="hero-dot" data-index="2"></div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="section section-gray">
+    <div class="container">
+      <div class="section-header">
+        <h2>产品分类</h2>
+        <p>全系列涂装产品，满足您的各种需求</p>
+      </div>
+      <div class="categories-grid" id="categories-grid">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>推荐产品</h2>
+        <p>精选高品质涂料产品，为您的家居提供最佳涂装方案</p>
+      </div>
+      <div class="products-grid" id="featured-products">
+        <!-- Rendered by JavaScript -->
+      </div>
+      <div style="text-align:center;margin-top:4rem;">
+        <a href="products.html" class="btn btn-secondary">查看全部商品</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Color Palette Section -->
+  <section class="color-palette-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>色彩灵感</h2>
+        <p>探索我们的精选色彩，为您的空间找到完美色调</p>
+      </div>
+      <div class="color-palette-grid" id="color-palette-grid">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section section-gray">
+    <div class="container">
+      <div class="section-header">
+        <h2>为什么选择我们</h2>
+        <p>专业服务，品质保障</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">✓</div>
+          <h3 class="feature-title">正品保障</h3>
+          <p class="feature-desc">所有产品均为品牌正品，提供正规发票和质保服务</p>
+        </div>
+        <div class="feature-card animate-on-scroll" data-delay="100">
+          <div class="feature-icon">→</div>
+          <h3 class="feature-title">快速配送</h3>
+          <p class="feature-desc">本地配送服务，下单后快速送达，节省您的时间</p>
+        </div>
+        <div class="feature-card animate-on-scroll" data-delay="200">
+          <div class="feature-icon">○</div>
+          <h3 class="feature-title">专业咨询</h3>
+          <p class="feature-desc">提供专业的涂装方案咨询，帮您选择最适合的产品</p>
+        </div>
+        <div class="feature-card animate-on-scroll" data-delay="300">
+          <div class="feature-icon">□</div>
+          <h3 class="feature-title">售后无忧</h3>
+          <p class="feature-desc">完善的售后服务体系，解决您的后顾之忧</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section" style="background:var(--color-text);color:white;">
+    <div class="container" style="text-align:center;">
+      <h2 style="font-size:clamp(1.75rem,3vw,2.5rem);font-weight:300;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.05em;">需要涂装方案？</h2>
+      <p style="font-size:0.9375rem;opacity:0.7;margin-bottom:2.5rem;max-width:500px;margin-left:auto;margin-right:auto;font-weight:300;">
+        无论您是家庭装修还是工程项目，我们都能为您提供专业的涂装解决方案
+      </p>
+      <a href="contact.html" class="btn btn-primary btn-large" style="background:white;color:var(--color-text);">联系我们</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>油漆店</h3>
+        <p>专业涂装解决方案提供商，为您的家居和工程提供高品质涂料产品和专业服务。</p>
+      </div>
+      <div class="footer-section">
+        <h3>快速链接</h3>
+        <p><a href="index.html">首页</a></p>
+        <p><a href="products.html">商品展示</a></p>
+        <p><a href="about.html">关于我们</a></p>
+        <p><a href="contact.html">联系方式</a></p>
+      </div>
+      <div class="footer-section">
+        <h3>产品分类</h3>
+        <p><a href="products.html?category=interior">内墙漆</a></p>
+        <p><a href="products.html?category=exterior">外墙漆</a></p>
+        <p><a href="products.html?category=wood">木器漆</a></p>
+        <p><a href="products.html?category=primer">底漆</a></p>
+      </div>
+      <div class="footer-section">
+        <h3>联系我们</h3>
+        <p>400-xxx-xxxx</p>
+        <p>地址待填写</p>
+        <p>营业时间：8:00-18:00</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 油漆店 版权所有 | <a href="admin/">管理后台</a></p>
+    </div>
+  </footer>
+
+  <!-- Contact Capsule -->
+  <a href="contact.html" class="contact-capsule">
+    <span>📞</span>
+    <span>联系我们</span>
+  </a>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Pages.initHome();
+    });
+  </script>
+</body>
+</html>

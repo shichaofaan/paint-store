@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="浏览我们的全系列油漆产品 - 内墙漆、外墙漆、木器漆、底漆、特种漆">
+  <title>商品展示 - 油漆店</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span>油漆店</span>
+      </a>
+      <button class="menu-toggle" aria-label="菜单">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="products.html" class="active">商品展示</a></li>
+        <li><a href="about.html">关于我们</a></li>
+        <li><a href="contact.html">联系方式</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section style="margin-top:72px;padding:6rem 2rem;background:var(--color-bg-warm);text-align:center;">
+    <div class="container">
+      <span style="font-size:0.75rem;letter-spacing:0.3em;color:var(--color-text-tertiary);display:block;margin-bottom:1rem;">OUR PRODUCTS</span>
+      <h1 style="font-size:clamp(2rem,4vw,3rem);font-weight:300;margin-bottom:0.5rem;font-family:var(--font-heading);letter-spacing:0.05em;">商品展示</h1>
+      <p style="font-size:0.9375rem;color:var(--color-text-secondary);font-weight:300;">浏览我们的全系列涂装产品</p>
+    </div>
+  </section>
+
+  <!-- Products Section -->
+  <section class="section">
+    <div class="container">
+      <!-- Filter Bar -->
+      <div class="filter-bar">
+        <div class="filter-tabs" id="filter-tabs">
+          <!-- Rendered by JavaScript -->
+        </div>
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="搜索产品...">
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="products-grid">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section section-gray">
+    <div class="container" style="text-align:center;">
+      <h2 style="font-size:1.75rem;font-weight:300;margin-bottom:1rem;font-family:var(--font-heading);letter-spacing:0.02em;">找不到想要的产品？</h2>
+      <p style="color:var(--color-text-secondary);margin-bottom:2rem;font-weight:300;">联系我们，我们可以为您提供更多产品选择和专业建议</p>
+      <a href="contact.html" class="btn btn-primary">联系我们</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>油漆店</h3>
+        <p>专业涂装解决方案提供商，为您的家居和工程提供高品质涂料产品和专业服务。</p>
+      </div>
+      <div class="footer-section">
+        <h3>快速链接</h3>
+        <p><a href="index.html">首页</a></p>
+        <p><a href="products.html">商品展示</a></p>
+        <p><a href="about.html">关于我们</a></p>
+        <p><a href="contact.html">联系方式</a></p>
+      </div>
+      <div class="footer-section">
+        <h3>产品分类</h3>
+        <p><a href="products.html?category=interior">内墙漆</a></p>
+        <p><a href="products.html?category=exterior">外墙漆</a></p>
+        <p><a href="products.html?category=wood">木器漆</a></p>
+        <p><a href="products.html?category=primer">底漆</a></p>
+      </div>
+      <div class="footer-section">
+        <h3>联系我们</h3>
+        <p>400-xxx-xxxx</p>
+        <p>地址待填写</p>
+        <p>营业时间：8:00-18:00</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 油漆店 版权所有 | <a href="admin/">管理后台</a></p>
+    </div>
+  </footer>
+
+  <!-- Contact Capsule -->
+  <a href="contact.html" class="contact-capsule">
+    <span>📞</span>
+    <span>联系我们</span>
+  </a>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      Pages.initProducts();
+    });
+  </script>
+</body>
+</html>

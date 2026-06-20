@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="联系我们 - 获取产品咨询、报价和售后服务">
+  <title>联系方式 - 油漆店</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span>油漆店</span>
+      </a>
+      <button class="menu-toggle" aria-label="菜单">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="products.html">商品展示</a></li>
+        <li><a href="about.html">关于我们</a></li>
+        <li><a href="contact.html" class="active">联系方式</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section style="margin-top:72px;padding:6rem 2rem;background:var(--color-bg-warm);text-align:center;">
+    <div class="container">
+      <span style="font-size:0.75rem;letter-spacing:0.3em;color:var(--color-text-tertiary);display:block;margin-bottom:1rem;">CONTACT US</span>
+      <h1 style="font-size:clamp(2rem,4vw,3rem);font-weight:300;margin-bottom:0.5rem;font-family:var(--font-heading);letter-spacing:0.05em;">联系我们</h1>
+      <p style="font-size:0.9375rem;color:var(--color-text-secondary);font-weight:300;">期待为您服务</p>
+    </div>
+  </section>
+
+  <!-- Contact Content -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+        <!-- Contact Info -->
+        <div class="contact-info animate-on-scroll">
+          <span style="font-size:0.75rem;letter-spacing:0.3em;color:var(--color-text-tertiary);display:block;margin-bottom:0.5rem;">GET IN TOUCH</span>
+          <h2 style="font-size:1.75rem;font-weight:300;margin-bottom:2rem;font-family:var(--font-heading);letter-spacing:0.02em;">联系方式</h2>
+
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div class="contact-item-content">
+              <h4>电话咨询</h4>
+              <p>400-xxx-xxxx</p>
+              <p>138-xxxx-xxxx</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div class="contact-item-content">
+              <h4>店铺地址</h4>
+              <p>地址待填写</p>
+              <p style="margin-top:0.5rem;font-size:0.8125rem;color:var(--color-accent);">查看地图 →</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">🕐</div>
+            <div class="contact-item-content">
+              <h4>营业时间</h4>
+              <p>周一至周六：8:00 - 18:00</p>
+              <p>周日：9:00 - 17:00</p>
+            </div>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon">💬</div>
+            <div class="contact-item-content">
+              <h4>微信咨询</h4>
+              <p>微信号：xxxxx</p>
+              <div class="qr-code" style="margin-top:1rem;">
+                微信二维码
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div style="background:white;padding:2.5rem;box-shadow:var(--shadow-sm);" class="animate-on-scroll" data-delay="200">
+          <span style="font-size:0.75rem;letter-spacing:0.3em;color:var(--color-text-tertiary);display:block;margin-bottom:0.5rem;">ONLINE INQUIRY</span>
+          <h2 style="font-size:1.75rem;font-weight:300;margin-bottom:2rem;font-family:var(--font-heading);letter-spacing:0.02em;">在线咨询</h2>
+          <form id="contact-form" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+              <label>您的姓名</label>
+              <input type="text" name="name" placeholder="请输入您的姓名" required>
+            </div>
+            <div class="form-group">
+              <label>联系电话</label>
+              <input type="tel" name="phone" placeholder="请输入您的手机号" required>
+            </div>
+            <div class="form-group">
+              <label>咨询内容</label>
+              <select name="type">
+                <option value="product">产品咨询</option>
+                <option value="price">价格咨询</option>
+                <option value="service">售后服务</option>
+                <option value="other">其他问题</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>详细描述</label>
+              <textarea name="message" placeholder="请描述您的需求或问题..." rows="5"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">提交咨询</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="section section-gray">
+    <div class="container">
+      <div class="section-header">
+        <h2>店铺位置</h2>
+        <p>欢迎到店参观选购</p>
+      </div>
+      <div class="contact-map">
+        <div style="text-align:center;">
+          <p style="font-size:1rem;margin-bottom:0.5rem;font-weight:300;">📍 店铺地址待填写</p>
+          <p style="font-size:0.8125rem;color:var(--color-text-tertiary);">请联系我们获取详细地址</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section">
+    <div class="container" style="max-width:800px;">
+      <div class="section-header">
+        <h2>常见问题</h2>
+        <p>快速解答您的疑问</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:2rem;">
+        <div style="padding:2rem;background:var(--color-bg-warm);" class="animate-on-scroll">
+          <h3 style="font-weight:400;margin-bottom:0.75rem;font-family:var(--font-heading);letter-spacing:0.02em;">你们提供配送服务吗？</h3>
+          <p style="color:var(--color-text-secondary);font-weight:300;line-height:1.8;">是的，我们提供本地配送服务。根据订单金额和距离，可能会收取一定的配送费用。具体请电话咨询。</p>
+        </div>
+        <div style="padding:2rem;background:var(--color-bg-warm);" class="animate-on-scroll" data-delay="100">
+          <h3 style="font-weight:400;margin-bottom:0.75rem;font-family:var(--font-heading);letter-spacing:0.02em;">可以帮忙调色吗？</h3>
+          <p style="color:var(--color-text-secondary);font-weight:300;line-height:1.8;">当然可以！我们提供专业的电脑调色服务，可以根据您的需求调配出满意的颜色。</p>
+        </div>
+        <div style="padding:2rem;background:var(--color-bg-warm);" class="animate-on-scroll" data-delay="200">
+          <h3 style="font-weight:400;margin-bottom:0.75rem;font-family:var(--font-heading);letter-spacing:0.02em;">产品有质保吗？</h3>
+          <p style="color:var(--color-text-secondary);font-weight:300;line-height:1.8;">所有产品均为正品行货，提供品牌官方质保。如遇质量问题，我们负责协调处理。</p>
+        </div>
+        <div style="padding:2rem;background:var(--color-bg-warm);" class="animate-on-scroll" data-delay="300">
+          <h3 style="font-weight:400;margin-bottom:0.75rem;font-family:var(--font-heading);letter-spacing:0.02em;">可以提供施工服务吗？</h3>
+          <p style="color:var(--color-text-secondary);font-weight:300;line-height:1.8;">我们可以为您推荐合作的施工团队，也可以提供施工技术指导，帮助您更好地完成涂装工程。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>油漆店</h3>
+        <p>专业涂装解决方案提供商，为您的家居和工程提供高品质涂料产品和专业服务。</p>
+      </div>
+      <div class="footer-section">
+        <h3>快速链接</h3>
+        <p><a href="index.html">首页</a></p>
+        <p><a href="products.html">商品展示</a></p>
+        <p><a href="about.html">关于我们</a></p>
+        <p><a href="contact.html">联系方式</a></p>
+      </div>
+      <div class="footer-section">
+        <h3>产品分类</h3>
+        <p><a href="products.html?category=interior">内墙漆</a></p>
+        <p><a href="products.html?category=exterior">外墙漆</a></p>
+        <p><a href="products.html?category=wood">木器漆</a></p>
+        <p><a href="products.html?category=primer">底漆</a></p>
+      </div>
+      <div class="footer-section">
+        <h3>联系我们</h3>
+        <p>400-xxx-xxxx</p>
+        <p>地址待填写</p>
+        <p>营业时间：8:00-18:00</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 油漆店 版权所有 | <a href="admin/">管理后台</a></p>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+
+      // In a real app, you would send this to a server
+      // For now, show a success message
+      UI.showToast('感谢您的咨询！我们会尽快与您联系。', 'success');
+      form.reset();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      ScrollAnimator.init();
+    });
+  </script>
+</body>
+</html>

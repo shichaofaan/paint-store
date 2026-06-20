@@ -1,0 +1,172 @@
+{
+  "products": [
+    {
+      "id": "prod_001",
+      "name": "高端净味内墙乳胶漆",
+      "category": "interior",
+      "priceRange": "¥300-600",
+      "description": "采用进口原料，零VOC配方，净味环保。超强覆盖力，一遍即可遮盖底色。漆膜细腻光滑，色彩持久不褪色。",
+      "shortDescription": "零VOC净味配方，环保健康",
+      "images": ["interior_01.jpg", "interior_02.jpg"],
+      "video": "interior_demo.mp4",
+      "specs": {
+        "容量": "5L/桶",
+        "覆盖面积": "40-50㎡/桶",
+        "干燥时间": "2小时表干，24小时实干",
+        "颜色": "可调配多种颜色",
+        "适用": "客厅、卧室、儿童房"
+      },
+      "features": ["零VOC", "净味环保", "超强覆盖", "色彩持久"],
+      "featured": true,
+      "active": true,
+      "createdAt": "2026-01-15"
+    },
+    {
+      "id": "prod_002",
+      "name": "抗甲醛全效内墙漆",
+      "category": "interior",
+      "priceRange": "¥400-800",
+      "description": "创新抗甲醛技术，持续净化室内空气。添加抗菌因子，有效抑制细菌滋生。耐擦洗次数超过10000次，持久如新。",
+      "shortDescription": "抗甲醛净化空气，抗菌防霉",
+      "images": ["interior_03.jpg", "interior_04.jpg"],
+      "video": "",
+      "specs": {
+        "容量": "5L/桶",
+        "覆盖面积": "45-55㎡/桶",
+        "干燥时间": "1小时表干，20小时实干",
+        "颜色": "可调配多种颜色",
+        "适用": "全屋内墙"
+      },
+      "features": ["抗甲醛", "抗菌防霉", "超强耐擦洗", "净化空气"],
+      "featured": true,
+      "active": true,
+      "createdAt": "2026-02-20"
+    },
+    {
+      "id": "prod_003",
+      "name": "外墙耐候弹性漆",
+      "category": "exterior",
+      "priceRange": "¥350-700",
+      "description": "高弹性配方，可覆盖细微裂纹。优异的耐候性，抵御紫外线、雨水侵蚀。防霉防藻，持久保持外墙美观。",
+      "shortDescription": "高弹性覆盖裂纹，耐候防霉",
+      "images": ["exterior_01.jpg", "exterior_02.jpg"],
+      "video": "exterior_demo.mp4",
+      "specs": {
+        "容量": "5L/桶",
+        "覆盖面积": "35-45㎡/桶",
+        "干燥时间": "2小时表干，24小时实干",
+        "颜色": "多种外墙色可选",
+        "适用": "建筑外墙、围墙"
+      },
+      "features": ["高弹性", "耐候防紫外线", "防霉防藻", "覆盖裂纹"],
+      "featured": true,
+      "active": true,
+      "createdAt": "2026-03-10"
+    },
+    {
+      "id": "prod_004",
+      "name": "真石漆",
+      "category": "exterior",
+      "priceRange": "¥150-350/㎡",
+      "description": "仿天然石材效果，质感强烈。耐候性优异，使用寿命长达15年以上。施工方便，成本远低于真石材。",
+      "shortDescription": "仿石效果，高端大气",
+      "images": ["exterior_03.jpg", "exterior_04.jpg"],
+      "video": "",
+      "specs": {
+        "容量": "25kg/桶",
+        "覆盖面积": "3-5㎡/桶",
+        "干燥时间": "24小时表干",
+        "颜色": "多种石材色可选",
+        "适用": "别墅、商业建筑外墙"
+      },
+      "features": ["仿石效果", "耐候15年", "施工便捷", "性价比高"],
+      "featured": false,
+      "active": true,
+      "createdAt": "2026-03-15"
+    },
+    {
+      "id": "prod_005",
+      "name": "木器清漆",
+      "category": "wood",
+      "priceRange": "¥200-500",
+      "description": "透明清漆，完美展现木材天然纹理。高硬度耐磨，有效保护木器表面。环保水性配方，安全无异味。",
+      "shortDescription": "透明清漆，展现木纹质感",
+      "images": ["wood_01.jpg", "wood_02.jpg"],
+      "video": "wood_demo.mp4",
+      "specs": {
+        "容量": "2.5L/桶",
+        "覆盖面积": "15-20㎡/桶",
+        "干燥时间": "1小时表干，12小时实干",
+        "光泽": "哑光/半哑/亮光",
+        "适用": "家具、地板、木饰面"
+      },
+      "features": ["展现木纹", "高硬度耐磨", "水性环保", "多光泽可选"],
+      "featured": true,
+      "active": true,
+      "createdAt": "2026-04-01"
+    },
+    {
+      "id": "prod_006",
+      "name": "木器色漆",
+      "category": "wood",
+      "priceRange": "¥250-550",
+      "description": "覆盖力强，色彩饱满均匀。优异的附着力，不易脱落开裂。抗黄变配方，持久保持色彩鲜艳。",
+      "shortDescription": "色彩饱满，抗黄变配方",
+      "images": ["wood_03.jpg", "wood_04.jpg"],
+      "video": "",
+      "specs": {
+        "容量": "2.5L/桶",
+        "覆盖面积": "12-18㎡/桶",
+        "干燥时间": "2小时表干，24小时实干",
+        "颜色": "可调配多种颜色",
+        "适用": "家具、门窗、木饰面"
+      },
+      "features": ["色彩饱满", "抗黄变", "强附着力", "不易脱落"],
+      "featured": false,
+      "active": true,
+      "createdAt": "2026-04-10"
+    },
+    {
+      "id": "prod_007",
+      "name": "全能封闭底漆",
+      "category": "primer",
+      "priceRange": "¥150-300",
+      "description": "强渗透力，有效封闭基层。增强面漆附着力，提升涂装效果。抗碱防潮，防止墙面泛碱发花。",
+      "shortDescription": "封闭基层，增强附着力",
+      "images": ["primer_01.jpg", "primer_02.jpg"],
+      "video": "",
+      "specs": {
+        "容量": "5L/桶",
+        "覆盖面积": "50-60㎡/桶",
+        "干燥时间": "1小时表干",
+        "颜色": "白色/透明",
+        "适用": "内外墙基层处理"
+      },
+      "features": ["强渗透封闭", "增强附着力", "抗碱防潮", "通用性强"],
+      "featured": false,
+      "active": true,
+      "createdAt": "2026-04-15"
+    },
+    {
+      "id": "prod_008",
+      "name": "防水涂料",
+      "category": "special",
+      "priceRange": "¥200-450",
+      "description": "优异的防水性能，有效阻隔水分渗透。弹性好，可覆盖细微裂纹。耐水泡，长期浸泡不脱落。",
+      "shortDescription": "专业防水，弹性覆盖裂纹",
+      "images": ["special_01.jpg", "special_02.jpg"],
+      "video": "special_demo.mp4",
+      "specs": {
+        "容量": "5kg/桶",
+        "覆盖面积": "8-12㎡/桶",
+        "干燥时间": "4小时表干，48小时实干",
+        "颜色": "灰色/白色",
+        "适用": "卫生间、厨房、阳台、屋顶"
+      },
+      "features": ["专业防水", "弹性覆盖", "耐水泡", "持久耐用"],
+      "featured": true,
+      "active": true,
+      "createdAt": "2026-05-01"
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="油漆店管理后台 - 商品管理">
+  <title>管理后台 - 油漆店</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <h2>🎨 油漆店管理</h2>
+      <ul class="admin-nav">
+        <li><a href="#" class="active">📦 商品管理</a></li>
+        <li><a href="../" target="_blank">🌐 查看网站</a></li>
+      </ul>
+      <div style="margin-top:auto;padding-top:2rem;border-top:1px solid #374151;">
+        <p style="font-size:0.75rem;color:#9ca3af;">数据存储在浏览器本地</p>
+        <p style="font-size:0.75rem;color:#9ca3af;margin-top:0.25rem;">定期导出备份以防丢失</p>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <div class="admin-header">
+        <h1>商品管理</h1>
+        <div style="display:flex;gap:0.75rem;">
+          <button id="btn-import" class="btn btn-secondary" style="font-size:0.875rem;">📥 导入数据</button>
+          <button id="btn-export" class="btn btn-secondary" style="font-size:0.875rem;">📤 导出数据</button>
+          <button id="btn-add-product" class="btn btn-primary" style="font-size:0.875rem;">➕ 添加商品</button>
+          <input type="file" id="import-file" accept=".json" style="display:none;">
+        </div>
+      </div>
+
+      <!-- Products Table -->
+      <div class="admin-table">
+        <table>
+          <thead>
+            <tr>
+              <th>商品</th>
+              <th>分类</th>
+              <th>价格区间</th>
+              <th>状态</th>
+              <th>创建时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <!-- Rendered by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Stats Cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:2rem;">
+        <div style="background:white;padding:1.5rem;border-radius:0.75rem;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+          <div style="font-size:0.875rem;color:var(--text-light);margin-bottom:0.5rem;">总商品数</div>
+          <div style="font-size:2rem;font-weight:700;color:var(--primary);" id="stat-total">0</div>
+        </div>
+        <div style="background:white;padding:1.5rem;border-radius:0.75rem;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+          <div style="font-size:0.875rem;color:var(--text-light);margin-bottom:0.5rem;">已上架</div>
+          <div style="font-size:2rem;font-weight:700;color:#16a34a;" id="stat-active">0</div>
+        </div>
+        <div style="background:white;padding:1.5rem;border-radius:0.75rem;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+          <div style="font-size:0.875rem;color:var(--text-light);margin-bottom:0.5rem;">已下架</div>
+          <div style="font-size:2rem;font-weight:700;color:#dc2626;" id="stat-inactive">0</div>
+        </div>
+        <div style="background:white;padding:1.5rem;border-radius:0.75rem;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+          <div style="font-size:0.875rem;color:var(--text-light);margin-bottom:0.5rem;">推荐商品</div>
+          <div style="font-size:2rem;font-weight:700;color:#d97706;" id="stat-featured">0</div>
+        </div>
+      </div>
+
+      <!-- Help Section -->
+      <div style="margin-top:2rem;padding:1.5rem;background:white;border-radius:0.75rem;box-shadow:0 2px 10px rgba(0,0,0,0.08);">
+        <h3 style="font-weight:600;margin-bottom:1rem;">💡 使用说明</h3>
+        <ul style="color:var(--text-light);font-size:0.875rem;line-height:2;list-style:disc;padding-left:1.5rem;">
+          <li><strong>添加商品</strong>：点击"添加商品"按钮，填写商品信息后保存</li>
+          <li><strong>编辑商品</strong>：点击商品列表中的"编辑"按钮修改信息</li>
+          <li><strong>上下架</strong>：点击"上架"或"下架"按钮控制商品是否在前台显示</li>
+          <li><strong>删除商品</strong>：点击"删除"按钮移除商品（此操作不可恢复）</li>
+          <li><strong>导出数据</strong>：定期点击"导出数据"备份商品信息</li>
+          <li><strong>导入数据</strong>：可通过"导入数据"恢复之前备份的商品信息</li>
+          <li><strong>图片/视频</strong>：将文件放入 assets/images 和 assets/videos 目录，然后在商品中填写文件名</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add/Edit Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-title">添加商品</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <form id="product-form">
+        <div class="form-group">
+          <label>商品名称 *</label>
+          <input type="text" name="name" placeholder="例：高端净味内墙乳胶漆" required>
+        </div>
+        <div class="form-group">
+          <label>商品分类 *</label>
+          <select name="category" required>
+            <!-- Populated by JavaScript -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label>价格区间 *</label>
+          <input type="text" name="priceRange" placeholder="例：¥300-600" required>
+        </div>
+        <div class="form-group">
+          <label>简短描述</label>
+          <input type="text" name="shortDescription" placeholder="一句话描述产品特点">
+        </div>
+        <div class="form-group">
+          <label>详细描述 *</label>
+          <textarea name="description" placeholder="详细的产品描述..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>产品图片</label>
+          <input type="text" name="images" placeholder="图片文件名，多个用逗号分隔，例：img1.jpg, img2.jpg">
+          <p style="font-size:0.75rem;color:var(--text-light);margin-top:0.25rem;">请将图片文件放入 assets/images 目录</p>
+        </div>
+        <div class="form-group">
+          <label>产品视频</label>
+          <input type="text" name="video" placeholder="视频文件名，例：demo.mp4">
+          <p style="font-size:0.75rem;color:var(--text-light);margin-top:0.25rem;">请将视频文件放入 assets/videos 目录</p>
+        </div>
+        <div class="form-group">
+          <label>产品特点</label>
+          <input type="text" name="features" placeholder="特点标签，多个用逗号分隔，例：零VOC, 环保, 耐擦洗">
+        </div>
+        <div class="form-group" style="display:flex;align-items:center;gap:0.5rem;">
+          <input type="checkbox" name="featured" id="featured-checkbox">
+          <label for="featured-checkbox" style="margin-bottom:0;">设为推荐商品</label>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="Admin.hideModal()">取消</button>
+          <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../assets/js/admin.js"></script>
+</body>
+</html>

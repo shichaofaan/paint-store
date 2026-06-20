@@ -1,0 +1,39 @@
+{
+  "categories": [
+    {
+      "id": "interior",
+      "name": "内墙漆",
+      "icon": "🏠",
+      "description": "环保净味，打造健康家居环境",
+      "active": true
+    },
+    {
+      "id": "exterior",
+      "name": "外墙漆",
+      "icon": "🏢",
+      "description": "耐候性强，持久保护建筑外观",
+      "active": true
+    },
+    {
+      "id": "wood",
+      "name": "木器漆",
+      "icon": "🪵",
+      "description": "专业木器涂装，彰显木材质感",
+      "active": true
+    },
+    {
+      "id": "primer",
+      "name": "底漆",
+      "icon": "🧴",
+      "description": "增强附着力，提升涂装效果",
+      "active": true
+    },
+    {
+      "id": "special",
+      "name": "特种漆",
+      "icon": "✨",
+      "description": "防水、防火、防腐等特殊功能",
+      "active": true
+    }
+  ]
+}
