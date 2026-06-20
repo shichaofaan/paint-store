@@ -366,6 +366,23 @@
     </main>
   </div>
 
+  <script src="../assets/js/auth.js"></script>
+  <script>
+    if (!Auth.requireAuth()) {
+      // 未登录，auth.js 会自动跳转到 login.html
+    } else {
+      // 显示退出按钮
+      const user = Auth.getCurrentUser();
+      const sidebar = document.querySelector('.admin-sidebar');
+      const logoutBtn = document.createElement('div');
+      logoutBtn.style.cssText = 'margin-top:auto;padding-top:1rem;border-top:1px solid #374151;';
+      logoutBtn.innerHTML = `
+        <p style="font-size:0.75rem;color:#9ca3af;">当前用户: ${user}</p>
+        <button onclick="Auth.logout()" style="margin-top:0.5rem;padding:0.5rem 1rem;background:rgba(255,255,255,0.1);color:white;border:none;cursor:pointer;font-size:0.75rem;width:100%;">退出登录</button>
+      `;
+      sidebar.appendChild(logoutBtn);
+    }
+  </script>
   <script>
     const API_BASE = 'https://paint-store-analytics.573877411.workers.dev';
 
