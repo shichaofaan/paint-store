@@ -1,5 +1,19 @@
 // ===== Admin Panel JavaScript =====
 
+// 管理页面独立的 UI 工具（不依赖 main.js）
+const AdminUI = {
+  getCategoryColor(category) {
+    const colors = {
+      interior: 'linear-gradient(135deg, #e8d5c4 0%, #f5ebe0 100%)',
+      exterior: 'linear-gradient(135deg, #c4d4e8 0%, #dbe4ee 100%)',
+      wood: 'linear-gradient(135deg, #d4c4a8 0%, #e8dcc8 100%)',
+      primer: 'linear-gradient(135deg, #d4d4d4 0%, #e8e8e8 100%)',
+      special: 'linear-gradient(135deg, #c4c8d4 0%, #d8dbe4 100%)'
+    };
+    return colors[category] || 'linear-gradient(135deg, #e8d5c4 0%, #f5ebe0 100%)';
+  }
+};
+
 const Admin = {
   products: [],
   categories: [],
@@ -71,7 +85,7 @@ const Admin = {
         <tr>
           <td>
             <div style="display:flex;align-items:center;gap:0.75rem;">
-              <div style="width:40px;height:40px;border-radius:0.375rem;background:${UI.getCategoryColor(product.category)};display:flex;align-items:center;justify-content:center;color:white;font-size:0.875rem;">
+              <div style="width:40px;height:40px;border-radius:0.375rem;background:${AdminUI.getCategoryColor(product.category)};display:flex;align-items:center;justify-content:center;color:white;font-size:0.875rem;">
                 ${product.images[0] ? `<img src="../assets/images/${product.images[0]}" style="width:100%;height:100%;object-fit:cover;border-radius:0.375rem;">` : '🎨'}
               </div>
               <div>
