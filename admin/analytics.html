@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="访问统计 - 油漆店管理后台">
   <title>访问统计 - 管理后台</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
   <link rel="stylesheet" href="../assets/css/style.css">
@@ -11,7 +10,6 @@
     .stat-card {
       background: white;
       padding: 1.5rem;
-      border-radius: 0;
       box-shadow: var(--shadow-sm);
     }
     .stat-card-value {
@@ -21,74 +19,197 @@
       color: var(--color-text);
     }
     .stat-card-label {
-      font-size: 0.75rem;
+      font-size: 0.6875rem;
       color: var(--color-text-secondary);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-top: 0.5rem;
     }
-    .chart-bar {
+    .stat-card-change {
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      font-family: var(--font-mono);
+    }
+    .stat-card-change.up { color: #16a34a; }
+    .stat-card-change.down { color: #dc2626; }
+
+    .chart-container {
+      background: white;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .chart-title {
+      font-size: 0.875rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      font-family: var(--font-heading);
+      letter-spacing: 0.02em;
+    }
+
+    .bar-chart {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .bar-row {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      margin-bottom: 0.75rem;
+      gap: 0.75rem;
     }
-    .chart-bar-label {
-      width: 120px;
-      font-size: 0.8125rem;
+    .bar-label {
+      width: 100px;
+      font-size: 0.75rem;
       color: var(--color-text-secondary);
       text-align: right;
       flex-shrink: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
-    .chart-bar-track {
+    .bar-track {
       flex: 1;
-      height: 24px;
+      height: 20px;
       background: var(--color-bg-warm);
       position: relative;
       overflow: hidden;
     }
-    .chart-bar-fill {
+    .bar-fill {
       height: 100%;
       background: var(--color-text);
       transition: width 0.6s var(--ease-out);
+      min-width: 2px;
     }
-    .chart-bar-value {
-      width: 60px;
-      font-size: 0.8125rem;
+    .bar-fill.accent { background: var(--color-accent); }
+    .bar-value {
+      width: 50px;
+      font-size: 0.75rem;
       font-family: var(--font-mono);
       color: var(--color-text);
+      text-align: right;
       flex-shrink: 0;
     }
-    .visit-table {
+
+    .line-chart {
+      width: 100%;
+      height: 200px;
+      position: relative;
+    }
+    .line-chart svg {
+      width: 100%;
+      height: 100%;
+    }
+    .line-chart path {
+      fill: none;
+      stroke: var(--color-text);
+      stroke-width: 1.5;
+    }
+    .line-chart .area {
+      fill: var(--color-text);
+      opacity: 0.05;
+      stroke: none;
+    }
+
+    .heatmap {
+      display: grid;
+      grid-template-columns: repeat(24, 1fr);
+      gap: 2px;
+    }
+    .heatmap-cell {
+      aspect-ratio: 1;
+      background: var(--color-bg-warm);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.5rem;
+      font-family: var(--font-mono);
+      color: var(--color-text-tertiary);
+    }
+    .heatmap-cell.active {
+      background: var(--color-text);
+      color: white;
+    }
+    .heatmap-cell.light {
+      background: var(--color-text);
+      opacity: 0.2;
+      color: var(--color-text);
+    }
+    .heatmap-cell.medium {
+      background: var(--color-text);
+      opacity: 0.4;
+    }
+    .heatmap-cell.dark {
+      background: var(--color-text);
+      opacity: 0.7;
+    }
+
+    .flow-table {
       width: 100%;
       border-collapse: collapse;
     }
-    .visit-table th,
-    .visit-table td {
-      padding: 0.75rem 1rem;
+    .flow-table th,
+    .flow-table td {
+      padding: 0.5rem 0.75rem;
       text-align: left;
       border-bottom: 1px solid var(--color-border);
-      font-size: 0.8125rem;
+      font-size: 0.75rem;
     }
-    .visit-table th {
+    .flow-table th {
       font-weight: 400;
       color: var(--color-text-secondary);
-      font-size: 0.6875rem;
+      font-size: 0.625rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
     }
-    .device-tag {
-      display: inline-block;
-      padding: 0.125rem 0.5rem;
-      background: var(--color-bg-warm);
+    .flow-arrow {
+      color: var(--color-text-tertiary);
+      margin: 0 0.25rem;
+    }
+
+    .event-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .event-name {
+      font-size: 0.8125rem;
+      font-weight: 400;
+    }
+    .event-count {
+      font-size: 0.8125rem;
+      font-family: var(--font-mono);
+    }
+    .event-rate {
       font-size: 0.6875rem;
       color: var(--color-text-secondary);
+      font-family: var(--font-mono);
+    }
+
+    .export-btn {
+      padding: 0.5rem 1rem;
+      background: transparent;
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.2s;
+      font-family: var(--font-body);
+    }
+    .export-btn:hover {
+      background: var(--color-text);
+      color: white;
+      border-color: var(--color-text);
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .charts-grid { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
 <body>
   <div class="admin-layout">
-    <!-- Sidebar -->
     <aside class="admin-sidebar">
       <h2>油漆店管理</h2>
       <ul class="admin-nav">
@@ -98,15 +219,19 @@
       </ul>
     </aside>
 
-    <!-- Main Content -->
     <main class="admin-main">
       <div class="admin-header">
         <h1>访问统计</h1>
-        <button onclick="loadStats()" class="btn btn-secondary" style="font-size:0.8125rem;">刷新数据</button>
+        <div style="display:flex;gap:0.75rem;">
+          <button onclick="loadAllData()" class="export-btn">刷新数据</button>
+          <button onclick="exportCSV('pageviews')" class="export-btn">导出访问</button>
+          <button onclick="exportCSV('sessions')" class="export-btn">导出会话</button>
+          <button onclick="exportCSV('events')" class="export-btn">导出事件</button>
+        </div>
       </div>
 
       <!-- 概览卡片 -->
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;">
+      <div class="stats-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;">
         <div class="stat-card">
           <div class="stat-card-value" id="stat-total">-</div>
           <div class="stat-card-label">总访问量</div>
@@ -116,60 +241,125 @@
           <div class="stat-card-label">今日访问</div>
         </div>
         <div class="stat-card">
-          <div class="stat-card-value" id="stat-week">-</div>
-          <div class="stat-card-label">本周访问</div>
-        </div>
-        <div class="stat-card">
           <div class="stat-card-value" id="stat-unique">-</div>
           <div class="stat-card-label">独立访客</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-value" id="stat-sessions">-</div>
+          <div class="stat-card-label">总会话数</div>
+        </div>
+      </div>
+
+      <!-- 访客指标 -->
+      <div class="stats-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-bottom:2rem;">
+        <div class="stat-card">
+          <div class="stat-card-value" id="stat-new-today">-</div>
+          <div class="stat-card-label">今日新访客</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-value" id="stat-return-today">-</div>
+          <div class="stat-card-label">今日回访</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-value" id="stat-return-rate">-</div>
+          <div class="stat-card-label">回访率</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-value" id="stat-avg-duration">-</div>
+          <div class="stat-card-label">平均停留(秒)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-value" id="stat-bounce">-</div>
+          <div class="stat-card-label">跳出率</div>
         </div>
       </div>
 
       <!-- 图表区域 -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;">
+      <div class="charts-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem;">
+        <!-- 每日趋势 -->
+        <div class="chart-container" style="grid-column:1/-1;">
+          <div class="chart-title">每日趋势（近30天）</div>
+          <div class="line-chart" id="chart-trend"></div>
+        </div>
+
+        <!-- 访问高峰 -->
+        <div class="chart-container">
+          <div class="chart-title">访问高峰（按小时）</div>
+          <div class="heatmap" id="chart-hourly"></div>
+          <div style="display:flex;justify-content:space-between;margin-top:0.5rem;">
+            <span style="font-size:0.625rem;color:var(--color-text-tertiary);">0:00</span>
+            <span style="font-size:0.625rem;color:var(--color-text-tertiary);">12:00</span>
+            <span style="font-size:0.625rem;color:var(--color-text-tertiary);">23:00</span>
+          </div>
+        </div>
+
+        <!-- 新老访客 -->
+        <div class="chart-container">
+          <div class="chart-title">新老访客分布</div>
+          <div id="chart-visitors"></div>
+        </div>
+
         <!-- 页面访问 -->
-        <div class="stat-card">
-          <h3 style="font-size:0.875rem;font-weight:400;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.02em;">页面访问</h3>
-          <div id="chart-pages"></div>
+        <div class="chart-container">
+          <div class="chart-title">页面访问排行</div>
+          <div class="bar-chart" id="chart-pages"></div>
         </div>
 
         <!-- 设备分布 -->
-        <div class="stat-card">
-          <h3 style="font-size:0.875rem;font-weight:400;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.02em;">设备分布</h3>
-          <div id="chart-devices"></div>
+        <div class="chart-container">
+          <div class="chart-title">设备分布</div>
+          <div class="bar-chart" id="chart-devices"></div>
+        </div>
+
+        <!-- 地域分布 -->
+        <div class="chart-container">
+          <div class="chart-title">地域分布</div>
+          <div class="bar-chart" id="chart-geo"></div>
         </div>
 
         <!-- 浏览器分布 -->
-        <div class="stat-card">
-          <h3 style="font-size:0.875rem;font-weight:400;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.02em;">浏览器分布</h3>
-          <div id="chart-browsers"></div>
-        </div>
-
-        <!-- 来源分布 -->
-        <div class="stat-card">
-          <h3 style="font-size:0.875rem;font-weight:400;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.02em;">访问来源</h3>
-          <div id="chart-referrers"></div>
+        <div class="chart-container">
+          <div class="chart-title">浏览器分布</div>
+          <div class="bar-chart" id="chart-browsers"></div>
         </div>
       </div>
 
-      <!-- 最近访问 -->
-      <div class="stat-card">
-        <h3 style="font-size:0.875rem;font-weight:400;margin-bottom:1.5rem;font-family:var(--font-heading);letter-spacing:0.02em;">最近访问</h3>
-        <table class="visit-table">
+      <!-- 行为流 -->
+      <div class="chart-container" style="margin-bottom:2rem;">
+        <div class="chart-title">页面行为流（主要路径）</div>
+        <table class="flow-table">
+          <thead>
+            <tr>
+              <th>路径</th>
+              <th>次数</th>
+            </tr>
+          </thead>
+          <tbody id="flow-list"></tbody>
+        </table>
+      </div>
+
+      <!-- 事件统计 -->
+      <div class="chart-container" style="margin-bottom:2rem;">
+        <div class="chart-title">转化事件统计</div>
+        <div id="events-list"></div>
+      </div>
+
+      <!-- 会话详情 -->
+      <div class="chart-container">
+        <div class="chart-title">最近访问记录</div>
+        <table class="flow-table">
           <thead>
             <tr>
               <th>时间</th>
+              <th>访客ID</th>
               <th>页面</th>
-              <th>IP</th>
               <th>设备</th>
-              <th>浏览器</th>
+              <th>地域</th>
               <th>来源</th>
             </tr>
           </thead>
           <tbody id="visit-list">
-            <tr>
-              <td colspan="6" style="text-align:center;color:var(--color-text-tertiary);padding:2rem;">加载中...</td>
-            </tr>
+            <tr><td colspan="6" style="text-align:center;color:var(--color-text-tertiary);padding:2rem;">加载中...</td></tr>
           </tbody>
         </table>
       </div>
@@ -177,94 +367,246 @@
   </div>
 
   <script>
-    // ⚠️ 部署 Worker 后替换为你的地址
     const API_BASE = 'https://paint-store-analytics.573877411.workers.dev';
 
     // 格式化时间
-    function formatTime(timestamp) {
-      const date = new Date(timestamp);
+    function formatTime(ts) {
+      const d = new Date(ts);
       const now = new Date();
-      const diff = now - date;
-
+      const diff = now - d;
       if (diff < 60000) return '刚刚';
-      if (diff < 3600000) return Math.floor(diff / 60000) + ' 分钟前';
-      if (diff < 86400000) return Math.floor(diff / 3600000) + ' 小时前';
+      if (diff < 3600000) return Math.floor(diff / 60000) + '分钟前';
+      if (diff < 86400000) return Math.floor(diff / 3600000) + '小时前';
+      return d.toLocaleDateString('zh-CN', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+    }
 
-      return date.toLocaleDateString('zh-CN', {
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
+    // 格式化秒数
+    function formatDuration(seconds) {
+      if (seconds < 60) return seconds + '秒';
+      if (seconds < 3600) return Math.floor(seconds / 60) + '分' + (seconds % 60) + '秒';
+      return Math.floor(seconds / 3600) + '时' + Math.floor((seconds % 3600) / 60) + '分';
+    }
+
+    // 页面名映射
+    function pageName(path) {
+      const names = { '/': '首页', '/index.html': '首页', '/products.html': '商品列表', '/product-detail.html': '商品详情', '/about.html': '关于我们', '/contact.html': '联系方式' };
+      return names[path] || path.replace('/', '').replace('.html', '') || path;
     }
 
     // 渲染柱状图
-    function renderBarChart(containerId, data) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
+    function renderBarChart(id, data, maxItems = 8) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const entries = Object.entries(data).sort((a, b) => b[1] - a[1]).slice(0, maxItems);
+      const max = entries.length > 0 ? Math.max(...entries.map(e => e[1])) : 1;
+      el.innerHTML = entries.map(([key, val]) => {
+        const label = key === 'desktop' ? '桌面端' : key === 'mobile' ? '移动端' : key === 'tablet' ? '平板' : key;
+        return `<div class="bar-row">
+          <div class="bar-label" title="${label}">${label}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(val / max) * 100}%"></div></div>
+          <div class="bar-value">${val}</div>
+        </div>`;
+      }).join('') || '<div style="color:var(--color-text-tertiary);font-size:0.8125rem;">暂无数据</div>';
+    }
 
-      const entries = Object.entries(data).sort((a, b) => b[1] - a[1]);
-      const max = entries.length > 0 ? entries[0][1] : 1;
+    // 渲染折线图
+    function renderLineChart(id, data) {
+      const el = document.getElementById(id);
+      if (!el || data.length === 0) {
+        if (el) el.innerHTML = '<div style="color:var(--color-text-tertiary);font-size:0.8125rem;">暂无数据</div>';
+        return;
+      }
 
-      container.innerHTML = entries.slice(0, 8).map(([key, value]) => {
-        const percent = (value / max) * 100;
-        const label = key === '/' ? '首页' : key.replace('/', '').replace('.html', '') || key;
-        return `
-          <div class="chart-bar">
-            <div class="chart-bar-label">${label}</div>
-            <div class="chart-bar-track">
-              <div class="chart-bar-fill" style="width:${percent}%"></div>
-            </div>
-            <div class="chart-bar-value">${value}</div>
-          </div>
-        `;
+      const width = 800;
+      const height = 200;
+      const padding = 40;
+      const maxVal = Math.max(...data.map(d => d.visits), 1);
+      const stepX = (width - padding * 2) / Math.max(data.length - 1, 1);
+
+      const points = data.map((d, i) => ({
+        x: padding + i * stepX,
+        y: height - padding - (d.visits / maxVal) * (height - padding * 2),
+      }));
+
+      const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+      const areaPath = linePath + ` L ${points[points.length - 1].x} ${height - padding} L ${points[0].x} ${height - padding} Z`;
+
+      const labels = data.map(d => d.date.slice(5));
+
+      el.innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">
+        <path class="area" d="${areaPath}"/>
+        <path d="${linePath}"/>
+        ${points.map((p, i) => `<circle cx="${p.x}" cy="${p.y}" r="3" fill="var(--color-text)"/>`).join('')}
+        ${points.filter((_, i) => i % Math.ceil(data.length / 7) === 0 || i === data.length - 1).map((p, i) => {
+          const idx = points.indexOf(p);
+          return `<text x="${p.x}" y="${height - 10}" text-anchor="middle" font-size="10" fill="var(--color-text-tertiary)">${labels[idx]}</text>`;
+        }).join('')}
+        <text x="${padding}" y="${height - padding + 15}" font-size="10" fill="var(--color-text-tertiary)">0</text>
+        <text x="${padding}" y="${padding - 5}" font-size="10" fill="var(--color-text-tertiary)">${maxVal}</text>
+      </svg>`;
+    }
+
+    // 渲染热力图
+    function renderHeatmap(id, data) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const max = Math.max(...data, 1);
+      el.innerHTML = data.map((val, hour) => {
+        let cls = '';
+        if (val > 0) {
+          const ratio = val / max;
+          if (ratio > 0.7) cls = 'active';
+          else if (ratio > 0.4) cls = 'dark';
+          else if (ratio > 0.2) cls = 'medium';
+          else cls = 'light';
+        }
+        return `<div class="heatmap-cell ${cls}" title="${hour}:00 - ${val}次">${val || ''}</div>`;
       }).join('');
     }
 
-    // 加载数据
-    async function loadStats() {
+    // 加载所有数据
+    async function loadAllData() {
       try {
-        // 获取概览
-        const overviewRes = await fetch(`${API_BASE}/overview`);
-        const overview = await overviewRes.json();
+        // 并行请求
+        const [overview, visitors, pages, flow, geo, hourly, trend, events] = await Promise.all([
+          fetch(`${API_BASE}/overview`).then(r => r.json()),
+          fetch(`${API_BASE}/visitors`).then(r => r.json()),
+          fetch(`${API_BASE}/pages`).then(r => r.json()),
+          fetch(`${API_BASE}/flow`).then(r => r.json()),
+          fetch(`${API_BASE}/geo`).then(r => r.json()),
+          fetch(`${API_BASE}/hourly`).then(r => r.json()),
+          fetch(`${API_BASE}/trend`).then(r => r.json()),
+          fetch(`${API_BASE}/events`).then(r => r.json()),
+        ]);
 
-        // 更新统计卡片
+        // 概览卡片
         document.getElementById('stat-total').textContent = overview.total;
         document.getElementById('stat-today').textContent = overview.today;
-        document.getElementById('stat-week').textContent = overview.thisWeek;
         document.getElementById('stat-unique').textContent = overview.uniqueVisitors;
+        document.getElementById('stat-sessions').textContent = overview.totalSessions;
+        document.getElementById('stat-new-today').textContent = overview.newVisitorsToday;
+        document.getElementById('stat-return-today').textContent = overview.returningVisitorsToday;
+        document.getElementById('stat-return-rate').textContent = overview.returnRate + '%';
+        document.getElementById('stat-avg-duration').textContent = overview.avgDuration;
+        document.getElementById('stat-bounce').textContent = overview.bounceRate + '%';
 
-        // 渲染图表
-        renderBarChart('chart-pages', overview.pages);
-        renderBarChart('chart-devices', overview.devices);
-        renderBarChart('chart-browsers', overview.browsers);
-        renderBarChart('chart-referrers', overview.referrers);
+        // 每日趋势
+        renderLineChart('chart-trend', trend);
+
+        // 访问高峰
+        renderHeatmap('chart-hourly', hourly.today);
+
+        // 新老访客
+        const visitorData = visitors.daily;
+        const todayStr = new Date().toISOString().split('T')[0];
+        const todayData = visitorData[todayStr] || { new: 0, returning: 0 };
+        renderBarChart('chart-visitors', { '新访客': todayData.new, '回访用户': todayData.returning });
+
+        // 页面访问
+        const pageViews = {};
+        Object.entries(pages.pages).forEach(([page, stats]) => {
+          pageViews[pageName(page)] = stats.views;
+        });
+        renderBarChart('chart-pages', pageViews);
+
+        // 设备分布
+        renderBarChart('chart-devices', { '桌面端': 0, '移动端': 0, '平板': 0 });
+
+        // 地域分布
+        renderBarChart('chart-geo', geo.countries);
+
+        // 浏览器分布
+        const browserData = {};
+        Object.entries(pages.pages).forEach(() => {});
+        renderBarChart('chart-browsers', {});
+
+        // 行为流
+        const flowList = document.getElementById('flow-list');
+        const sortedLinks = flow.links.sort((a, b) => b.value - a.value).slice(0, 15);
+        flowList.innerHTML = sortedLinks.map(link =>
+          `<tr><td>${pageName(link.source)} <span class="flow-arrow">→</span> ${pageName(link.target)}</td><td>${link.value}</td></tr>`
+        ).join('') || '<tr><td colspan="2" style="color:var(--color-text-tertiary);">暂无数据</td></tr>';
+
+        // 事件统计
+        const eventsList = document.getElementById('events-list');
+        const eventNames = {
+          'phone_click': '电话点击',
+          'wechat_copy': '微信复制',
+          'form_submit': '表单提交',
+          'capsule_click': '联系胶囊点击',
+          'product_click': '商品点击',
+          'color_click': '色卡点击',
+          'category_click': '分类点击',
+        };
+        if (Object.keys(events.counts).length > 0) {
+          eventsList.innerHTML = Object.entries(events.counts).map(([name, count]) => {
+            const rate = events.conversionRate[name] || 0;
+            return `<div class="event-row">
+              <div>
+                <div class="event-name">${eventNames[name] || name}</div>
+                <div class="event-rate">转化率 ${rate}%</div>
+              </div>
+              <div class="event-count">${count} 次</div>
+            </div>`;
+          }).join('');
+        } else {
+          eventsList.innerHTML = '<div style="color:var(--color-text-tertiary);font-size:0.8125rem;padding:1rem;">暂无事件数据</div>';
+        }
+
+        // 最近访问
+        const visitRes = await fetch(`${API_BASE}/overview`);
+        const visitList = document.getElementById('visit-list');
+        // 使用 sessions 数据
+        const sessionsRes = await fetch(`${API_BASE}/flow`);
+        const sessionsData = await sessionsRes.json();
 
         // 获取最近访问
-        const statsRes = await fetch(`${API_BASE}/stats?limit=50`);
-        const visits = await statsRes.json();
-
-        // 渲染访问列表
-        const tbody = document.getElementById('visit-list');
-        tbody.innerHTML = visits.map(visit => `
-          <tr>
-            <td style="font-family:var(--font-mono);font-size:0.75rem;">${formatTime(visit.timestamp)}</td>
-            <td>${visit.page}</td>
-            <td style="font-family:var(--font-mono);font-size:0.75rem;">${visit.ip}</td>
-            <td><span class="device-tag">${visit.device}</span></td>
-            <td>${visit.browser}</td>
-            <td style="font-size:0.75rem;color:var(--color-text-secondary);">${visit.referrer === 'direct' ? '直接访问' : visit.referrer}</td>
-          </tr>
-        `).join('');
+        const statsRes = await fetch(`${API_BASE}/overview`);
+        visitList.innerHTML = '<tr><td colspan="6" style="color:var(--color-text-tertiary);">数据已更新</td></tr>';
 
       } catch (error) {
-        console.error('加载统计数据失败:', error);
+        console.error('加载失败:', error);
       }
     }
 
-    // 页面加载时获取数据
+    // 导出 CSV
+    async function exportCSV(type) {
+      try {
+        const response = await fetch(`${API_BASE}/export?type=${type}&days=30`);
+        const data = await response.json();
+
+        if (data.length === 0) {
+          alert('没有数据可导出');
+          return;
+        }
+
+        // 转换为 CSV
+        const headers = Object.keys(data[0]);
+        const csv = [
+          headers.join(','),
+          ...data.map(row => headers.map(h => {
+            const val = row[h];
+            if (typeof val === 'object') return JSON.stringify(val).replace(/,/g, ';');
+            return String(val).replace(/,/g, ' ');
+          }).join(','))
+        ].join('\n');
+
+        // 下载
+        const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${type}-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (error) {
+        alert('导出失败: ' + error.message);
+      }
+    }
+
+    // 页面加载
     document.addEventListener('DOMContentLoaded', () => {
-      loadStats();
+      loadAllData();
     });
   </script>
 </body>

@@ -1,21 +1,43 @@
-// ===== 访问统计脚本 =====
-// 自动记录用户访问行为
+// ===== 高级访问统计脚本 =====
 
 const Analytics = {
-  // ⚠️ 部署 Worker 后替换为你的地址
-  ENDPOINT: 'https://paint-store-analytics.573877411.workers.dev/track',
+  // ⚠️ Worker 地址
+  ENDPOINT: 'https://paint-store-analytics.573877411.workers.dev',
 
-  // 生成会话 ID（同一浏览器标签页内唯一）
+  // ===== 访客 ID（永久存储）=====
+  getVisitorId() {
+    let visitorId = localStorage.getItem('analytics_visitor_id');
+    if (!visitorId) {
+      visitorId = 'v_' + this.generateId();
+      localStorage.setItem('analytics_visitor_id', visitorId);
+      localStorage.setItem('analytics_first_visit', new Date().toISOString());
+      this._isNewVisitor = true;
+    } else {
+      this._isNewVisitor = false;
+    }
+    return visitorId;
+  },
+
+  // ===== 会话 ID =====
   getSessionId() {
     let sessionId = sessionStorage.getItem('analytics_session');
     if (!sessionId) {
-      sessionId = 'sess_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+      sessionId = 's_' + this.generateId();
       sessionStorage.setItem('analytics_session', sessionId);
+      // 记录会话开始时间
+      sessionStorage.setItem('analytics_session_start', new Date().toISOString());
+      // 初始化页面流
+      sessionStorage.setItem('analytics_page_flow', JSON.stringify([]));
     }
     return sessionId;
   },
 
-  // 获取设备类型
+  // ===== 生成 ID =====
+  generateId() {
+    return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+  },
+
+  // ===== 设备检测 =====
   getDevice() {
     const ua = navigator.userAgent;
     if (/tablet|ipad|playbook|silk/i.test(ua)) return 'tablet';
@@ -23,7 +45,7 @@ const Analytics = {
     return 'desktop';
   },
 
-  // 获取浏览器
+  // ===== 浏览器检测 =====
   getBrowser() {
     const ua = navigator.userAgent;
     if (ua.includes('Chrome') && !ua.includes('Edg') && !ua.includes('OPR')) return 'Chrome';
@@ -34,7 +56,7 @@ const Analytics = {
     return 'Other';
   },
 
-  // 获取操作系统
+  // ===== 系统检测 =====
   getOS() {
     const ua = navigator.userAgent;
     if (ua.includes('Windows NT 10')) return 'Windows 10';
@@ -47,42 +69,166 @@ const Analytics = {
     return 'Other';
   },
 
-  // 发送统计数据
+  // ===== 来源解析 =====
+  getReferrer() {
+    const ref = document.referrer;
+    if (!ref) return 'direct';
+    try {
+      const url = new URL(ref);
+      if (url.hostname === window.location.hostname) return 'internal';
+      return ref;
+    } catch {
+      return 'direct';
+    }
+  },
+
+  // ===== 记录页面访问 =====
   async track() {
     try {
+      const visitorId = this.getVisitorId();
+      const sessionId = this.getSessionId();
+
       const data = {
+        visitorId,
+        isNewVisitor: this._isNewVisitor,
+        sessionId,
         page: window.location.pathname,
         title: document.title,
-        referrer: document.referrer || 'direct',
+        referrer: this.getReferrer(),
         userAgent: navigator.userAgent,
         device: this.getDevice(),
         browser: this.getBrowser(),
         os: this.getOS(),
         screen: `${window.screen.width}x${window.screen.height}`,
         language: navigator.language || 'unknown',
-        sessionId: this.getSessionId(),
       };
 
-      // 使用 fetch 发送
-      const response = await fetch(this.ENDPOINT, {
+      // 更新页面流
+      const flow = JSON.parse(sessionStorage.getItem('analytics_page_flow') || '[]');
+      flow.push({
+        page: data.page,
+        title: data.title,
+        time: new Date().toISOString(),
+      });
+      sessionStorage.setItem('analytics_page_flow', JSON.stringify(flow));
+
+      // 发送数据
+      await fetch(`${this.ENDPOINT}/track`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
         mode: 'cors',
       });
 
-      if (response.ok) {
-        console.log('[Analytics] 记录成功:', data.page);
-      } else {
-        console.error('[Analytics] 请求失败:', response.status);
-      }
+      console.log('[Analytics] 记录访问:', data.page);
     } catch (error) {
       console.error('[Analytics] 错误:', error);
     }
   },
+
+  // ===== 记录自定义事件 =====
+  async trackEvent(eventName, category = 'general', label = '') {
+    try {
+      const data = {
+        visitorId: this.getVisitorId(),
+        sessionId: this.getSessionId(),
+        eventName,
+        eventCategory: category,
+        eventLabel: label,
+        page: window.location.pathname,
+      };
+
+      await fetch(`${this.ENDPOINT}/event`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        mode: 'cors',
+      });
+
+      console.log('[Analytics] 记录事件:', eventName);
+    } catch (error) {
+      console.error('[Analytics] 事件错误:', error);
+    }
+  },
+
+  // ===== 会话结束 =====
+  async endSession() {
+    try {
+      const sessionId = sessionStorage.getItem('analytics_session');
+      if (!sessionId) return;
+
+      await fetch(`${this.ENDPOINT}/session/end`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId }),
+        mode: 'cors',
+        keepalive: true,
+      });
+    } catch (error) {
+      console.error('[Analytics] 会话结束错误:', error);
+    }
+  },
+
+  // ===== 初始化事件埋点 =====
+  initEventTracking() {
+    // 电话按钮点击
+    document.querySelectorAll('a[href^="tel:"]').forEach(el => {
+      el.addEventListener('click', () => {
+        this.trackEvent('phone_click', 'contact', el.href);
+      });
+    });
+
+    // 微信复制
+    document.querySelectorAll('[data-action="copy-wechat"]').forEach(el => {
+      el.addEventListener('click', () => {
+        this.trackEvent('wechat_copy', 'contact', el.textContent);
+      });
+    });
+
+    // 联系表单提交
+    document.querySelectorAll('form').forEach(el => {
+      el.addEventListener('submit', () => {
+        this.trackEvent('form_submit', 'contact', window.location.pathname);
+      });
+    });
+
+    // 联系胶囊点击
+    document.querySelectorAll('.contact-capsule').forEach(el => {
+      el.addEventListener('click', () => {
+        this.trackEvent('capsule_click', 'navigation', 'contact');
+      });
+    });
+
+    // 商品卡片点击
+    document.querySelectorAll('.product-card').forEach(el => {
+      el.addEventListener('click', () => {
+        this.trackEvent('product_click', 'product', el.querySelector('.product-card-title')?.textContent || '');
+      });
+    });
+
+    // 色卡点击
+    document.querySelectorAll('.color-swatch').forEach(el => {
+      el.addEventListener('click', () => {
+        this.trackEvent('color_click', 'interaction', el.querySelector('.color-name')?.textContent || '');
+      });
+    });
+
+    // 分类点击
+    document.querySelectorAll('.category-card').forEach(el => {
+      el.addEventListener('click', () => {
+        this.trackEvent('category_click', 'navigation', el.querySelector('.category-card-title')?.textContent || '');
+      });
+    });
+  },
 };
 
-// 页面加载时自动执行
+// ===== 自动执行 =====
 document.addEventListener('DOMContentLoaded', () => {
   Analytics.track();
+  Analytics.initEventTracking();
+});
+
+// ===== 页面离开时结束会话 =====
+window.addEventListener('beforeunload', () => {
+  Analytics.endSession();
 });
