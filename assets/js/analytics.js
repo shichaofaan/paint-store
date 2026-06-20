@@ -3,7 +3,7 @@
 
 const Analytics = {
   // ⚠️ 部署 Worker 后替换为你的地址
-  ENDPOINT: 'https://paint-store-analytics.573877411.workers.dev',
+  ENDPOINT: 'https://paint-store-analytics.573877411.workers.dev/track',
 
   // 生成会话 ID（同一浏览器标签页内唯一）
   getSessionId() {
