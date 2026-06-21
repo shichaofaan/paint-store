@@ -206,32 +206,6 @@ const UI = {
     });
   },
 
-  // Initialize hero slider
-  initHeroSlider() {
-    const slides = document.querySelectorAll('.hero-slide');
-    const dots = document.querySelectorAll('.hero-dot');
-    if (slides.length === 0) return;
-
-    let currentSlide = 0;
-
-    function goToSlide(index) {
-      slides[currentSlide].classList.remove('active');
-      dots[currentSlide]?.classList.remove('active');
-      currentSlide = index;
-      slides[currentSlide].classList.add('active');
-      dots[currentSlide]?.classList.add('active');
-    }
-
-    // Auto advance
-    setInterval(() => {
-      goToSlide((currentSlide + 1) % slides.length);
-    }, 6000);
-
-    // Dot clicks
-    dots.forEach((dot, index) => {
-      dot.addEventListener('click', () => goToSlide(index));
-    });
-  }
 };
 
 // ===== Canvas 流体背景 =====
@@ -240,6 +214,7 @@ const HeroCanvas = {
   ctx: null,
   blobs: [],
   animationId: null,
+  isVisible: true,
 
   init() {
     this.canvas = document.getElementById('hero-canvas');
@@ -257,6 +232,15 @@ const HeroCanvas = {
       { x: 0.8, y: 0.3, r: 140, color: 'rgba(245, 230, 200, 0.12)', vx: -0.0003, vy: 0.0002 },
     ];
 
+    // 使用 IntersectionObserver 暂停不可见时的动画
+    const observer = new IntersectionObserver((entries) => {
+      this.isVisible = entries[0].isIntersecting;
+      if (this.isVisible && !this.animationId) {
+        this.animate();
+      }
+    }, { threshold: 0 });
+    observer.observe(this.canvas);
+
     window.addEventListener('resize', () => this.resize());
     this.animate();
   },
@@ -271,21 +255,23 @@ const HeroCanvas = {
   },
 
   animate() {
+    if (!this.isVisible) {
+      this.animationId = null;
+      return;
+    }
+
     const w = window.innerWidth;
     const h = window.innerHeight;
 
     this.ctx.clearRect(0, 0, w, h);
 
     this.blobs.forEach(blob => {
-      // 移动
       blob.x += blob.vx;
       blob.y += blob.vy;
 
-      // 边界反弹
       if (blob.x < -0.1 || blob.x > 1.1) blob.vx *= -1;
       if (blob.y < -0.1 || blob.y > 1.1) blob.vy *= -1;
 
-      // 绘制渐变色块
       const cx = blob.x * w;
       const cy = blob.y * h;
       const gradient = this.ctx.createRadialGradient(cx, cy, 0, cx, cy, blob.r);
@@ -304,6 +290,7 @@ const HeroCanvas = {
   destroy() {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
+      this.animationId = null;
     }
   }
 };
