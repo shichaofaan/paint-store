@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="家庭装修设计器 - 自定义您的理想空间">
+  <title>装修设计器 - 油漆店</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/designer.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span>油漆店</span>
+      </a>
+      <button class="menu-toggle" aria-label="菜单">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="products.html">商品展示</a></li>
+        <li><a href="designer.html" class="active">装修设计器</a></li>
+        <li><a href="about.html">关于我们</a></li>
+        <li><a href="contact.html">联系方式</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Designer Layout -->
+  <div class="designer-layout">
+    <!-- Toolbar -->
+    <div class="designer-toolbar">
+      <div class="toolbar-group">
+        <button class="toolbar-btn" id="btn-scene" title="选择场景">
+          <span class="toolbar-btn-icon">🏠</span>
+          <span>场景</span>
+        </button>
+        <button class="toolbar-btn active" id="btn-select" title="选择工具">
+          <span class="toolbar-btn-icon">👆</span>
+          <span>选择</span>
+        </button>
+        <button class="toolbar-btn" id="btn-wall-color" title="更换墙色">
+          <span class="toolbar-btn-icon">🎨</span>
+          <span>墙色</span>
+        </button>
+      </div>
+
+      <div class="toolbar-group">
+        <button class="toolbar-btn" id="btn-furniture" title="添加家具">
+          <span class="toolbar-btn-icon">🪑</span>
+          <span>家具</span>
+        </button>
+        <button class="toolbar-btn" id="btn-decor" title="添加装饰">
+          <span class="toolbar-btn-icon">🖼️</span>
+          <span>装饰</span>
+        </button>
+        <button class="toolbar-btn" id="btn-lighting" title="灯光效果">
+          <span class="toolbar-btn-icon">💡</span>
+          <span>灯光</span>
+        </button>
+      </div>
+
+      <div class="toolbar-group">
+        <button class="toolbar-btn" id="btn-camera" title="拍照">
+          <span class="toolbar-btn-icon">📷</span>
+          <span>拍照</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Canvas Area -->
+    <div class="designer-canvas-area">
+      <div class="designer-canvas-wrapper">
+        <canvas id="designer-canvas" width="800" height="500"></canvas>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="designer-sidebar">
+      <div class="sidebar-tabs">
+        <button class="sidebar-tab active" data-tab="素材">素材库</button>
+        <button class="sidebar-tab" data-tab="颜色">颜色</button>
+        <button class="sidebar-tab" data-tab="场景">场景</button>
+      </div>
+
+      <div class="sidebar-content" id="sidebar-content">
+        <!-- Dynamic content -->
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="designer-actions">
+      <div class="action-group">
+        <button class="action-btn" id="btn-undo" title="撤销">
+          <span>↩</span>
+          <span>撤销</span>
+        </button>
+        <button class="action-btn" id="btn-reset" title="重置">
+          <span>🔄</span>
+          <span>重置</span>
+        </button>
+      </div>
+      <div class="action-group">
+        <button class="action-btn" id="btn-save" title="保存">
+          <span>💾</span>
+          <span>保存</span>
+        </button>
+        <button class="action-btn action-btn-primary" id="btn-share" title="分享">
+          <span>🔗</span>
+          <span>分享</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Camera Modal -->
+  <div class="camera-modal" id="camera-modal">
+    <div class="camera-container">
+      <video class="camera-video" id="camera-video" autoplay playsinline></video>
+      <div class="camera-actions">
+        <button class="camera-btn camera-btn-cancel" id="camera-cancel">取消</button>
+        <button class="camera-btn camera-btn-capture" id="camera-capture">拍照</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Modal -->
+  <div class="share-modal" id="share-modal">
+    <div class="share-content">
+      <h2 class="share-title">分享您的设计</h2>
+      <div class="share-link-container">
+        <input type="text" class="share-link-input" id="share-link" readonly>
+        <button class="share-copy-btn" id="share-copy">复制</button>
+      </div>
+      <p class="share-status" id="share-status">复制链接分享给朋友，即可查看您的设计作品</p>
+      <button class="share-close" id="share-close">关闭</button>
+    </div>
+  </div>
+
+  <script src="assets/js/designer/canvas.js"></script>
+  <script src="assets/js/designer/scene.js"></script>
+  <script src="assets/js/designer/elements.js"></script>
+  <script src="assets/js/designer/tools.js"></script>
+  <script src="assets/js/designer/camera.js"></script>
+  <script src="assets/js/designer/storage.js"></script>
+  <script src="assets/js/designer/share.js"></script>
+  <script src="assets/js/designer/app.js"></script>
+</body>
+</html>

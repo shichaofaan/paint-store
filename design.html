@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="查看装修设计作品">
+  <title>查看设计 - 油漆店</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/designer.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span>油漆店</span>
+      </a>
+      <button class="menu-toggle" aria-label="菜单">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html">首页</a></li>
+        <li><a href="products.html">商品展示</a></li>
+        <li><a href="designer.html">装修设计器</a></li>
+        <li><a href="about.html">关于我们</a></li>
+        <li><a href="contact.html">联系方式</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Design Viewer -->
+  <div class="design-viewer">
+    <div class="design-viewer-canvas">
+      <canvas id="viewer-canvas" width="800" height="500"></canvas>
+    </div>
+
+    <div class="design-info">
+      <div class="design-info-left">
+        <h1 id="design-title">加载中...</h1>
+        <p id="design-meta">-</p>
+        <p id="design-description" style="margin-top:0.5rem;"></p>
+      </div>
+      <div class="design-info-right">
+        <button class="design-action-btn" id="btn-copy-design">复制此设计</button>
+        <button class="design-action-btn" id="btn-share-link">分享链接</button>
+        <a href="designer.html" class="design-action-btn design-action-btn-primary">创建我的设计</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Share Modal -->
+  <div class="share-modal" id="share-modal">
+    <div class="share-content">
+      <h2 class="share-title">分享此设计</h2>
+      <div class="share-link-container">
+        <input type="text" class="share-link-input" id="share-link" readonly>
+        <button class="share-copy-btn" id="share-copy">复制</button>
+      </div>
+      <p class="share-status">复制链接分享给朋友</p>
+      <button class="share-close" id="share-close">关闭</button>
+    </div>
+  </div>
+
+  <script src="assets/js/designer/canvas.js"></script>
+  <script src="assets/js/designer/scene.js"></script>
+  <script src="assets/js/designer/elements.js"></script>
+  <script src="assets/js/designer/share.js"></script>
+  <script>
+    // 查看设计页面逻辑
+    const DesignViewer = {
+      designData: null,
+
+      async init() {
+        // 从 URL 获取设计 ID
+        const path = window.location.pathname;
+        const designIdMatch = path.match(/\/design\/(.+)/);
+        const designId = designIdMatch ? designIdMatch[1] : null;
+
+        if (!designId) {
+          // 尝试从 URL 参数获取
+          const urlParams = new URLSearchParams(window.location.search);
+          const id = urlParams.get('id');
+          if (id) {
+            await this.loadDesign(id);
+          } else {
+            this.showError('未找到设计 ID');
+          }
+          return;
+        }
+
+        await this.loadDesign(designId);
+      },
+
+      async loadDesign(designId) {
+        try {
+          // 尝试从 GitHub 加载
+          const data = await DesignerShare.loadFromGitHub(designId);
+
+          if (data) {
+            this.designData = data;
+            this.renderDesign(data);
+          } else {
+            // 尝试从本地存储加载
+            const localData = localStorage.getItem('designer_draft');
+            if (localData) {
+              const parsed = JSON.parse(localData);
+              if (parsed.id === designId) {
+                this.designData = parsed;
+                this.renderDesign(parsed);
+                return;
+              }
+            }
+            this.showError('设计不存在或已被删除');
+          }
+        } catch (error) {
+          console.error('加载设计失败:', error);
+          this.showError('加载失败，请重试');
+        }
+      },
+
+      renderDesign(data) {
+        // 更新标题
+        document.getElementById('design-title').textContent = data.metadata?.title || '未命名设计';
+        document.getElementById('design-meta').textContent = `创建于 ${new Date(data.createdAt).toLocaleDateString('zh-CN')}`;
+        document.getElementById('design-description').textContent = data.metadata?.description || '';
+
+        // 渲染画布
+        const canvas = document.getElementById('viewer-canvas');
+        if (!canvas) return;
+
+        // 初始化画布（只读模式）
+        DesignerCanvas.canvas = canvas;
+        DesignerCanvas.ctx = canvas.getContext('2d');
+        DesignerCanvas.width = 800;
+        DesignerCanvas.height = 500;
+
+        // 导入数据
+        if (data.scene) {
+          DesignerScene.importData(data.scene);
+        }
+
+        if (data.elements) {
+          DesignerCanvas.elements = data.elements.map(el => {
+            if (el.imageData) {
+              const img = new Image();
+              img.src = el.imageData;
+              el.image = img;
+            }
+            return el;
+          });
+        }
+
+        DesignerCanvas.render();
+
+        // 绑定按钮
+        document.getElementById('btn-copy-design')?.addEventListener('click', () => {
+          this.copyDesign();
+        });
+
+        document.getElementById('btn-share-link')?.addEventListener('click', () => {
+          this.shareDesign();
+        });
+      },
+
+      showError(message) {
+        document.getElementById('design-title').textContent = '错误';
+        document.getElementById('design-meta').textContent = message;
+      },
+
+      copyDesign() {
+        if (!this.designData) return;
+
+        // 保存到本地存储
+        localStorage.setItem('designer_draft', JSON.stringify(this.designData));
+        alert('设计已复制！即将跳转到设计器...');
+        window.location.href = 'designer.html';
+      },
+
+      shareDesign() {
+        if (!this.designData) return;
+
+        const shareLink = DesignerShare.generateShareLink(this.designData.id);
+        document.getElementById('share-link').value = shareLink;
+
+        document.getElementById('share-copy')?.addEventListener('click', async () => {
+          await DesignerShare.copyLink(shareLink);
+          alert('链接已复制！');
+        });
+
+        document.getElementById('share-close')?.addEventListener('click', () => {
+          document.getElementById('share-modal').classList.remove('active');
+        });
+
+        document.getElementById('share-modal').classList.add('active');
+      }
+    };
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      DesignViewer.init();
+    });
+  </script>
+</body>
+</html>
