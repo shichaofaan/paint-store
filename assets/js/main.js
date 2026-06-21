@@ -191,10 +191,32 @@ const UI = {
 
     // Mobile menu toggle
     if (menuToggle) {
-      menuToggle.addEventListener('click', () => {
+      menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
         navLinks.classList.toggle('active');
+        menuToggle.classList.toggle('active');
       });
     }
+
+    // 点击链接后关闭菜单
+    if (navLinks) {
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+          menuToggle?.classList.remove('active');
+        });
+      });
+    }
+
+    // 点击页面其他区域关闭菜单
+    document.addEventListener('click', (e) => {
+      if (navLinks?.classList.contains('active') &&
+          !navLinks.contains(e.target) &&
+          !menuToggle?.contains(e.target)) {
+        navLinks.classList.remove('active');
+        menuToggle?.classList.remove('active');
+      }
+    });
 
     // Set active link
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
